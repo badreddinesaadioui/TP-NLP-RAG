@@ -1,71 +1,82 @@
 import os
+from typing import List, Dict, Generator, Optional
 from pypdf import PdfReader
 
 
 class DocumentLoader:
-    """Loads PDF documents from a directory and extracts their text."""
+    """Loads PDF documents from a directory and extracts their text efficiently."""
 
     def __init__(self, directory_path: str):
+        if not os.path.isdir(directory_path):
+            raise ValueError(f"Invalid directory: {directory_path}")
+
         self.directory_path = directory_path
-        self.documents = []
+        self.documents: List[Dict[str, str]] = []
 
-    def load_documents(self):
+    def load_documents(self, use_streamlit: bool = False):
         """
-        Load all PDF documents from the directory and extract their text.
-        Includes Streamlit progress UI components.
+        Load all PDF documents and extract text.
+        If use_streamlit=True, displays a progress bar.
         """
-        import streamlit as st
-
         pdf_files = [
             f for f in os.listdir(self.directory_path)
-            if f.lower().endswith('.pdf')
+            if f.lower().endswith(".pdf")
         ]
 
-        status_text = st.empty()
-        status_text.write("Starting PDF processing...")
-        progress_bar = st.progress(0)
+        status_text = progress_bar = None
+        if use_streamlit:
+            import streamlit as st
+            status_text = st.empty()
+            progress_bar = st.progress(0)
+            status_text.write("Starting PDF processing...")
 
-        total_files = len(pdf_files)
-        for idx, filename in enumerate(pdf_files):
+        total = len(pdf_files)
+        for i, filename in enumerate(pdf_files):
             file_path = os.path.join(self.directory_path, filename)
 
-            status_text.write(f"Reading {filename}...")
-            self._read_pdf(file_path)
+            if status_text:
+                status_text.write(f"Reading {filename}...")
 
-            progress_bar.progress((idx + 1) / total_files)
+            self.documents.append({
+                "source": file_path,
+                "text": self._extract_pdf_text(file_path)
+            })
 
-        status_text.empty()
-        progress_bar.empty()
+            if progress_bar:
+                progress_bar.progress((i + 1) / total)
+
+        if status_text:
+            status_text.empty()
+        if progress_bar:
+            progress_bar.empty()
 
         return self.documents
 
-    def _read_pdf(self, file_path: str):
-        """Extract text from a PDF file and store it in the documents list."""
+    @staticmethod
+    def _extract_pdf_text(file_path: str) -> str:
+        """Extract all text from a PDF file (optimized)."""
         reader = PdfReader(file_path)
-        text = ""
 
-        for page in reader.pages:
-            extracted = page.extract_text()
-            if extracted:
-                text += extracted + "\n"
+        # Générateur optimisé (évite concaténation répétée)
+        lines: Generator[str, None, None] = (
+            page.extract_text() or ""
+            for page in reader.pages
+        )
 
-        self.documents.append({
-            "source": file_path,
-            "text": text.strip()
-        })
+        return "\n".join(lines).strip()
 
-    def get_chunked_text(self, chunk_size: int = 1000):
-        """
-        Split all loaded documents into chunks of a given size.
+    def get_chunked_text(self, chunk_size: int = 1000) -> List[str]:
+        """Split all documents into text chunks of a given size."""
+        if chunk_size <= 0:
+            raise ValueError("chunk_size must be > 0")
 
-        :param chunk_size: Maximum size of each text chunk.
-        :return: List of text chunks.
-        """
-        chunks = []
+        chunks: List[str] = []
 
         for doc in self.documents:
             text = doc["text"]
-            for i in range(0, len(text), chunk_size):
-                chunks.append(text[i:i + chunk_size])
+            chunks.extend(
+                text[i:i + chunk_size]
+                for i in range(0, len(text), chunk_size)
+            )
 
         return chunks
