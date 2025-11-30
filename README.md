@@ -1,49 +1,53 @@
-## Group members
+# TP - NLP RAG Project
 
-- **Oussama Hajji**
-- **Membre2**
-- **Membre2**
-- **Membre2**
+## Team Members
+- Ghita Nahli
+- Abderrahmane Salehi
+- Badreddine Saadioui
+- Oussama Hajji
 
-# RAG Chatbot – Retrieval-Augmented Generation
+## Setup
 
-This project implements an intelligent chatbot using a RAG (Retrieval-Augmented Generation) architecture to answer user questions based on a collection of PDF documents.
-The system combines document extraction, vector search, and text generation using an LLM, utilizing research papers on LLMs as reference documents. It helps researchers perform benchmarks on the topic and understand how each article attempts to solve a problem without wasting too much time.
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/badreddinesaadioui/TP-NLP-RAG.git
+   cd TP-NLP-RAG
+   ```
 
-## 1. Features
-- Automatic PDF loading
-- Splitting documents into chunks
-- Embedding generation
-- Vector storage (cosine similarity)
-- Retrieval of the most relevant passages
-- Command-line interface (cli.py)
-- Web interface via Streamlit
+2. **Create and activate virtual environment:**
+   ```bash
+   python3 -m venv venv
+   source venv/bin/activate
+   ```
 
+3. **Install dependencies:**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
----
+4. **API Key Setup:**
+   - For Streamlit: Create `.streamlit/secrets.toml` and add:
+     ```toml
+     OPENAI_API_KEY = "your_key_here"
+     ```
+   - For CLI: Create a `.env` file in the root directory and add:
+     ```env
+     OPENAI_API_KEY=your_key_here
+     ```
 
-## 2. Project Architecture
+## Usage
 
-RAG/
-│
-├── app.py                  # Interface Streamlit  
-├── cli.py                  # Chatbot en terminal  
-│
-├── data/  
-│   └── documentation/               # Dossier des PDF  
-│
-├── src/  
-│   ├── loader.py  # Chargement des PDF  
-│   ├── vector_store.py     # Index vectoriel (ChromaDB / cosine)  
-│   └── chatbot.py          # Gestion du chat + historique  
-│
-│
-└──requirments.txt
-└── README.md
+### Run Streamlit App (Chatbot)
+```bash
+streamlit run app.py
+```
 
-
-
----
-
-## 3. Installation
-
+### Run CLI Tool
+- **Index Documents:**
+  ```bash
+  python cli.py --index
+  ```
+- **Ask a Question:**
+  ```bash
+  python cli.py --query "Your question here"
+  ```
