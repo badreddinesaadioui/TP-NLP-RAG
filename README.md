@@ -26,13 +26,14 @@
    ```
 
 4. **API Key Setup:**
+   - **Note:** This project uses OpenAI's GPT-4o-mini model for the Chatbot and Evaluation. You need your own API Key from [OpenAI Platform](https://platform.openai.com/api-keys).
    - For Streamlit: Create `.streamlit/secrets.toml` and add:
      ```toml
-     OPENAI_API_KEY = "your_key_here"
+     OPENAI_API_KEY = "your_api_key"
      ```
    - For CLI: Create a `.env` file in the root directory and add:
      ```env
-     OPENAI_API_KEY=your_key_here
+     OPENAI_API_KEY=your_api_key
      ```
 
 ## Usage
