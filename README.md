@@ -1,4 +1,4 @@
-## Membres du groupe
+## Group members
 
 - **Oussama Hajji**
 - **Membre2**
@@ -7,10 +7,8 @@
 
 # RAG Chatbot – Retrieval-Augmented Generation
 
-Ce projet implémente un chatbot intelligent utilisant une architecture RAG (Retrieval-Augmented Generation) afin de répondre aux questions de l’utilisateur à partir d’un ensemble de documents PDF.  
-Le système combine extraction de documents, recherche vectorielle et génération avec un LLM (Google Gemini).
-
----
+This project implements an intelligent chatbot using a RAG (Retrieval-Augmented Generation) architecture to answer user questions based on a collection of PDF documents.
+The system combines document extraction, vector search, and text generation using an LLM, utilizing research papers on LLMs as reference documents. It helps researchers perform benchmarks on the topic and understand how each article attempts to solve a problem without wasting too much time.
 
 ## 1. Fonctionnalités
 
