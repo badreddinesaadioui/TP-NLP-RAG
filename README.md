@@ -29,23 +29,24 @@ Le système combine extraction de documents, recherche vectorielle et générati
 
 RAG/
 │
-├── app.py # Interface Streamlit
-├── cli.py # Chatbot en terminal
+├── app.py                  # Interface Streamlit  
+├── cli.py                  # Chatbot en terminal  
 │
-├── data/
-│ └── pdfs/ # Dossier des PDF
+├── data/  
+│   └── pdfs/               # Dossier des PDF  
 │
-├── src/
-│ ├── document_loader.py # Chargement des PDF
-│ ├── text_splitter.py # Découpage en chunks
-│ ├── embedding_model.py # Embeddings
-│ ├── vector_store.py # Index vectoriel
-│ ├── retriever.py # Recherche
-│ ├── llm_model.py # Appel à Gemini
-│ ├── rag_pipeline.py # Pipeline RAG
-│ └── chatbot.py # Gestion du chat
+├── src/  
+│   ├── document_loader.py  # Chargement des PDF  
+│   ├── text_splitter.py    # Découpage en chunks  
+│   ├── embedding_model.py  # Génération d'embeddings  
+│   ├── vector_store.py     # Index vectoriel (FAISS / cosine)  
+│   ├── retriever.py        # Recherche des chunks pertinents  
+│   ├── llm_model.py        # Appel au modèle Gemini  
+│   ├── rag_pipeline.py     # Pipeline RAG (context + prompt)  
+│   └── chatbot.py          # Gestion du chat + historique  
 │
 └── README.md
+
 
 
 ---
