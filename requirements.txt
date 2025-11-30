@@ -1,8 +1,11 @@
+langchain
+langchain-community
+langchain-openai
+langchain-huggingface
+chromadb
+sentence-transformers
+pypdf
+python-dotenv
 streamlit
 openai
-pypdf
-faiss-cpu
-numpy
-scikit-learn
 tiktoken
-ChromaDB
