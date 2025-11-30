@@ -1,194 +1,134 @@
 # TP-NLP-RAG
-\documentclass[12pt,a4paper]{article}
+📚 RAG Chatbot — Retrieval-Augmented Generation
 
-\usepackage[utf8]{inputenc}
-\usepackage[T1]{fontenc}
-\usepackage{lmodern}
-\usepackage{hyperref}
-\usepackage{geometry}
-\usepackage{titlesec}
-\usepackage{xcolor}
-\usepackage{listings}
-\usepackage{graphicx}
+Ce projet implémente un chatbot intelligent capable de répondre à des questions en utilisant le contenu de vos documents PDF grâce à une architecture RAG (Retrieval-Augmented Generation).
 
-\geometry{margin=2cm}
+Le chatbot utilise :
 
-% Style des sections
-\titleformat{\section}{\large\bfseries}{\thesection.}{1em}{}
-\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection.}{1em}{}
+extraction de texte PDF
 
-% Code style
-\lstset{
-    basicstyle=\ttfamily\small,
-    backgroundcolor=\color{gray!10},
-    frame=single,
-    breaklines=true
-}
+découpage en chunks
 
-\begin{document}
+embeddings vectoriels
 
-% -------------------------------------------------------------------
-\begin{center}
-    {\LARGE \textbf{Projet RAG -- Retrieval-Augmented Generation}}\\[0.5cm]
-    {\large Rapport technique / README en \LaTeX}\\[0.5cm]
-\end{center}
-% -------------------------------------------------------------------
+recherche par similarité
 
-\section*{Objectif du Projet}
+génération de réponses via Google Gemini
 
-L'objectif de ce projet est de concevoir un système complet appelés RAG (\textit{Retrieval-Augmented Generation}).  
-Il s'agit d'un chatbot intelligent capable d'utiliser des documents PDF fournis par l'utilisateur pour générer des réponses contextualisées grâce à un modèle de langage (LLM).
+interface web Streamlit
 
-Ce système repose sur :
-\begin{itemize}
-    \item l'extraction et le traitement de documents PDF,
-    \item la génération d'embeddings vectoriels,
-    \item la recherche par similarité,
-    \item la génération de texte via le modèle Google Gemini,
-    \item une interface utilisateur avec Streamlit.
-\end{itemize}
+🚀 Fonctionnalités
 
-% -------------------------------------------------------------------
-\section{Architecture Globale}
+📄 Lecture automatique des PDF depuis data/pdfs/
 
-\begin{lstlisting}
+✂️ Découpage du texte en chunks optimisés
+
+🧠 Génération d'embeddings (sentence-transformers)
+
+📦 Stockage vectoriel custom (cosine similarity)
+
+🔍 Récupération des documents pertinents
+
+🤖 Réponse générée avec Gemini
+
+🌐 Interface web via Streamlit
+
+🖥️ Interface CLI pour usage terminal
+
+🏗️ Architecture du projet
 RAG/
 │
-├── app.py                      # Interface Streamlit
-├── cli.py                      # Interface CLI
+├── app.py                     # Interface Streamlit
+├── cli.py                     # Chatbot en mode terminal
 │
 ├── data/
-│   └── pdfs/                   # Documents PDF
+│   └── pdfs/                  # Vos documents PDF
 │
 ├── src/
-│   ├── document_loader.py      # Chargement PDF
-│   ├── text_splitter.py        # Découpage en chunks
-│   ├── embedding_model.py      # Embeddings
-│   ├── vector_store.py         # Index vectoriel
-│   ├── retriever.py            # Recherche de similarité
-│   ├── llm_model.py            # Appel Gemini
-│   ├── rag_pipeline.py         # Pipeline RAG
-│   └── chatbot.py              # Chatbot
+│   ├── document_loader.py     # Extraction PDF
+│   ├── text_splitter.py       # Split en chunks
+│   ├── embedding_model.py     # Embeddings
+│   ├── vector_store.py        # Index vectoriel
+│   ├── retriever.py           # Recherche
+│   ├── llm_model.py           # LLM Gemini
+│   ├── rag_pipeline.py        # Pipeline RAG
+│   └── chatbot.py             # Chatbot final
 │
-└── README.tex
-\end{lstlisting}
+└── README.md
 
-% -------------------------------------------------------------------
-\section{Fonctionnement du Système}
-
-\subsection{1. Chargement des Documents}
-Les fichiers PDF présents dans \texttt{data/pdfs} sont automatiquement chargés et analysés.
-
-\subsection{2. Découpage en Chunks}
-Le texte est découpé en segments plus courts afin d'améliorer la recherche et la qualité des embeddings.
-
-\subsection{3. Génération des Embeddings}
-Chaque chunk est encodé en vecteur numérique via un modèle de type \texttt{SentenceTransformer}.
-
-\subsection{4. Index Vectoriel}
-Les vecteurs sont stockés dans une base interne permettant des recherches rapides par similarité.
-
-\subsection{5. Recherche de Contexte}
-Lorsqu'une question est posée, les chunks les plus pertinents sont sélectionnés grâce à la similarité cosinus.
-
-\subsection{6. Génération de Réponse (LLM)}
-Le modèle Google Gemini reçoit :
-\begin{itemize}
-    \item la question,
-    \item les documents pertinents retrouvés.
-\end{itemize}
-Il génère ensuite une réponse enrichie.
-
-\subsection{7. Interface Utilisateur}
-Le chatbot est disponible via :
-\begin{itemize}
-    \item une interface CLI (\texttt{cli.py}),
-    \item une application web Streamlit (\texttt{app.py}).
-\end{itemize}
-
-% -------------------------------------------------------------------
-\section{Installation}
-
-\subsection{1. Cloner le projet}
-\begin{lstlisting}
-git clone <URL-du-repo>
+⚙️ Installation
+1. Cloner le projet
+git clone <URL_DU_REPO>
 cd RAG
-\end{lstlisting}
 
-\subsection{2. Installer les dépendances}
-\begin{lstlisting}
+2. Installer les dépendances
 pip install -r requirements.txt
-\end{lstlisting}
 
-\subsection{3. Configurer l’API Key Gemini}
-
-\textbf{Windows (PowerShell) :}
-\begin{lstlisting}
+3. Ajouter la clé API Gemini
+Windows (PowerShell)
 setx GEMINI_API_KEY "VOTRE_CLE_ICI"
-\end{lstlisting}
 
-\textbf{Linux / macOS :}
-\begin{lstlisting}
+Linux / macOS
 export GEMINI_API_KEY="VOTRE_CLE_ICI"
-\end{lstlisting}
 
-Redémarrer le terminal ou VS Code pour appliquer la configuration.
 
-% -------------------------------------------------------------------
-\section{Utilisation}
+Ensuite, redémarre VS Code ou le terminal pour appliquer les variables d'environnement.
 
-\subsection{Interface CLI}
-\begin{lstlisting}
+▶️ Utilisation
+🔹 1. Mode CLI (terminal)
 python cli.py
-\end{lstlisting}
 
-\subsection{Interface Streamlit}
-\begin{lstlisting}
-python -m streamlit run app.py
-\end{lstlisting}
+🔹 2. Mode Web avec Streamlit
+streamlit run app.py
 
-L'application sera disponible à l'adresse :
 
-\begin{center}
-\textbf{http://localhost:8501}
-\end{center}
+👀 L'application s’ouvrira sur :
+👉 http://localhost:8501
 
-% -------------------------------------------------------------------
-\section{Exemple d’Interaction}
+🧠 Comment fonctionne le RAG ?
 
-\begin{enumerate}
-    \item Déposer des fichiers PDF dans \texttt{data/pdfs}
-    \item Lancer l'application
-    \item Poser une question, par exemple :
+Tu poses une question
 
-    \textit{"Quels sont les points importants du premier document ?"}
+Le système convertit ta question en embedding
 
-    \item Le système extrait les passages pertinents et fournit une réponse générée par Gemini.
-\end{enumerate}
+Il cherche les chunks PDF les plus proches
 
-% -------------------------------------------------------------------
-\section{Technologies Utilisées}
+Le contexte trouvé est ajouté à la question
 
-\begin{itemize}
-    \item \textbf{Python}
-    \item \textbf{PyPDF2} -- Extraction PDF
-    \item \textbf{SentenceTransformer} -- Embeddings
-    \item \textbf{Numpy} -- Similarité cosinus
-    \item \textbf{Google Gemini} -- Modèle LLM
-    \item \textbf{Streamlit} -- Interface web
-\end{itemize}
+Le tout est envoyé au LLM Gemini
 
-% -------------------------------------------------------------------
-\section{Membres du Groupe}
+Le LLM génère une réponse basée sur :
 
-\begin{itemize}
-    \item Oussama Hajji
-    \item (Ajouter les autres membres)
-\end{itemize}
+ta question
 
-% -------------------------------------------------------------------
-\section*{Licence}
+les passages pertinents du PDF
 
-Projet réalisé dans le cadre universitaire. Utilisation libre à des fins éducatives.
+📌 Exemple d'utilisation
 
-\end{document}
+→ Déposez des fichiers PDF dans data/pdfs/
+→ Lancez l’appli Streamlit
+→ Entrez une question, par exemple :
+
+"Quels sont les points clés du document 1 ?"
+
+Le chatbot analysera vos PDF et générera une réponse enrichie.
+
+🧰 Technologies utilisées
+
+Python 3
+
+PyPDF2
+
+sentence-transformers
+
+NumPy
+
+Google Gemini API
+
+Streamlit
+
+Vector Search (cosine similarity)
+
+👥 Membres du groupe
+
+Hajji Oussama
