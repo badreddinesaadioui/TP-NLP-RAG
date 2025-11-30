@@ -1,0 +1,8 @@
+streamlit
+openai
+pypdf
+faiss-cpu
+numpy
+scikit-learn
+tiktoken
+
